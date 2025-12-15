@@ -1,0 +1,151 @@
+<section class="glass-card page-heading">
+    <h1>Gallery</h1>
+    <p>Some of our favorite bandana looks. Tap a photo to view it full screen.</p>
+</section>
+
+<section class="gallery-grid" id="galleryGrid">
+    <% const images=["img/dog1.jpg" , "img/dog2.jpg" , "img/dog3.jpg" , "img/dog4.jpg" , "img/dog5.jpg" , "img/dog6.jpg"
+        , "img/dog7.jpg" , "img/dog8.jpg" , "img/dog9.jpg" , "img/dog10.jpg" ]; %>
+
+        <% images.forEach((src, idx)=> { %>
+            <button class="gallery-tile" type="button" data-index="<%= idx %>" aria-label="Open image <%= idx + 1 %>">
+                <img src="<%= src %>" alt="Coodles Creations gallery image <%= idx + 1 %>" loading="lazy" />
+            </button>
+            <% }) %>
+</section>
+
+<!-- Lightbox Modal -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+
+    <div class="lightbox-shell" role="dialog" aria-modal="true" aria-label="Image viewer">
+        <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <button class="lightbox-nav left" id="lightboxPrev" type="button" aria-label="Previous image">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="lightbox-stage" id="lightboxStage">
+            <img id="lightboxImage" src="" alt="Expanded gallery image" />
+        </div>
+
+        <button class="lightbox-nav right" id="lightboxNext" type="button" aria-label="Next image">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const grid = document.getElementById("galleryGrid");
+        const lightbox = document.getElementById("lightbox");
+        const backdrop = document.getElementById("lightboxBackdrop");
+        const imgEl = document.getElementById("lightboxImage");
+        const btnClose = document.getElementById("lightboxClose");
+        const btnPrev = document.getElementById("lightboxPrev");
+        const btnNext = document.getElementById("lightboxNext");
+        const counter = document.getElementById("lightboxCounter");
+        const stage = document.getElementById("lightboxStage");
+
+        if (!grid || !lightbox || !imgEl) return;
+
+        const tiles = Array.from(grid.querySelectorAll(".gallery-tile"));
+        const sources = tiles.map(t => t.querySelector("img").src);
+
+        let currentIndex = 0;
+
+        function openAt(index) {
+            currentIndex = index;
+            imgEl.src = sources[currentIndex];
+            counter.textContent = (currentIndex + 1) + " / " + sources.length;
+
+            lightbox.classList.add("open");
+            lightbox.setAttribute("aria-hidden", "false");
+            document.body.classList.add("lightbox-open");
+        }
+
+        function close() {
+            lightbox.classList.remove("open");
+            lightbox.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("lightbox-open");
+
+            // small cleanup so old image doesn't flash next open
+            setTimeout(() => { imgEl.src = ""; }, 200);
+        }
+
+        function prev() {
+            currentIndex = (currentIndex - 1 + sources.length) % sources.length;
+            imgEl.src = sources[currentIndex];
+            counter.textContent = (currentIndex + 1) + " / " + sources.length;
+        }
+
+        function next() {
+            currentIndex = (currentIndex + 1) % sources.length;
+            imgEl.src = sources[currentIndex];
+            counter.textContent = (currentIndex + 1) + " / " + sources.length;
+        }
+
+        // Click thumbnails
+        grid.addEventListener("click", (e) => {
+            const tile = e.target.closest(".gallery-tile");
+            if (!tile) return;
+            const idx = Number(tile.dataset.index);
+            openAt(idx);
+        });
+
+        // Close controls
+        btnClose.addEventListener("click", close);
+        backdrop.addEventListener("click", close);
+
+        // Arrows
+        btnPrev.addEventListener("click", prev);
+        btnNext.addEventListener("click", next);
+
+        // Keyboard
+        window.addEventListener("keydown", (e) => {
+            if (!lightbox.classList.contains("open")) return;
+            if (e.key === "Escape") close();
+            if (e.key === "ArrowLeft") prev();
+            if (e.key === "ArrowRight") next();
+        });
+
+        // Swipe support
+        let startX = 0;
+        let startY = 0;
+        let isTouching = false;
+
+        stage.addEventListener("touchstart", (e) => {
+            if (!lightbox.classList.contains("open")) return;
+            const t = e.touches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+            isTouching = true;
+        }, { passive: true });
+
+        stage.addEventListener("touchmove", (e) => {
+            if (!isTouching) return;
+            // Prevent page scroll while swiping inside modal
+            e.preventDefault();
+        }, { passive: false });
+
+        stage.addEventListener("touchend", (e) => {
+            if (!isTouching) return;
+            isTouching = false;
+
+            const t = e.changedTouches[0];
+            const dx = t.clientX - startX;
+            const dy = t.clientY - startY;
+
+            // horizontal swipe threshold + ignore mostly vertical gestures
+            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+                if (dx < 0) next();
+                else prev();
+            }
+        }, { passive: true });
+
+    })();
+</script>

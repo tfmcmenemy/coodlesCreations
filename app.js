@@ -51,6 +51,13 @@ app.get("/sizing", (req, res) => {
   });
 });
 
+app.get("/gallery", (req, res) => {
+  res.render("gallery", {
+    activePage: "gallery",
+    pageTitle: "Gallery | Coodles Creations",
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Coodles Creations site running on http://localhost:${PORT}`);
