@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= pageTitle || 'Coodles Creations' %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Elastic slip-on dog bandanas with matching scrunchies so you can match your dog. Handmade in Gainesville, VA.">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-bx...fakehash..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="page-bg"></div>
+
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <div class="logo-wrapper" id="logo-wrapper">
+                <a href="/" class="logo-link">
+                    <img src="/img/logo.png" alt="Coodles Creations Logo" class="logo-img" />
+                    <span class="logo-text">
+                        Coodles Creations
+                    </span>
+                </a>
+            </div>
+
+            <nav class="desktop-nav">
+                <a href="/" class="desktop-nav-link <%= activePage === 'home' ? 'is-active' : '' %>">Home</a>
+                <a href="/about" class="desktop-nav-link <%= activePage === 'about' ? 'is-active' : '' %>">About</a>
+                <a href="/shop" class="desktop-nav-link <%= activePage === 'shop' ? 'is-active' : '' %>">Shop</a>
+                <a href="/contact"
+                    class="desktop-nav-link <%= activePage === 'contact' ? 'is-active' : '' %>">Contact</a>
+                <a href="/sizing" class="desktop-nav-link <%= activePage === 'sizing' ? 'is-active' : '' %>">Sizing
+                    Guide</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main">
+        <div class="content-container">
+            <%- body %>
+        </div>
+    </main>
+
+    <%- include('partials/bottom-nav', { activePage }) %>
+
+        <script src="/js/main.js"></script>
+</body>
+
+</html>
