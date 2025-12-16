@@ -80,11 +80,17 @@
             Want first dibs on new prints, event dates, and sales? Join our email list and we’ll send
             only the good stuff – no spam, just cute dogs and bandanas.
         </p>
-        <form class="simple-form">
+        <form class="simple-form" id="mailingListForm">
             <div class="field">
-                <label for="email">Email address</label>
-                <input id="email" type="email" placeholder="you@example.com" required>
+                <label for="ml-name">Name (optional)</label>
+                <input id="ml-name" name="name" type="text" placeholder="Your name">
             </div>
+
+            <div class="field">
+                <label for="ml-email">Email address</label>
+                <input id="ml-email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+
             <button type="submit" class="btn btn-primary btn-full">Join the Mailing List</button>
         </form>
     </div>

@@ -711,3 +711,108 @@ body.lightbox-open {
   border: 1px solid rgba(255, 255, 255, 0.18);
   z-index: 3;
 }
+/* =========================
+   Coodles Alert Modal
+   ========================= */
+body.cc-alert-open {
+  overflow: hidden;
+}
+
+.cc-alert {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+}
+
+.cc-alert.open {
+  display: block;
+}
+
+.cc-alert-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(12px);
+}
+
+.cc-alert-card {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: min(520px, 92vw);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  padding: 16px 16px 14px;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.cc-alert-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.cc-alert-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cc-alert-title {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.cc-alert-message {
+  font-size: 0.95rem;
+  color: rgba(15, 23, 42, 0.78);
+  line-height: 1.25rem;
+}
+
+.cc-alert-ok {
+  border: 0;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.08);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.cc-alert-ok:hover {
+  background: rgba(15, 23, 42, 0.13);
+  transform: translateY(-1px);
+}
+
+/* schemes */
+.cc-alert.scheme-success .cc-alert-icon {
+  background: rgba(16, 185, 129, 0.14);
+  color: rgb(16, 185, 129);
+}
+
+.cc-alert.scheme-success .cc-alert-ok {
+  background: rgba(16, 185, 129, 0.16);
+}
+
+.cc-alert.scheme-warn .cc-alert-icon {
+  background: rgba(245, 158, 11, 0.16);
+  color: rgb(245, 158, 11);
+}
+
+.cc-alert.scheme-warn .cc-alert-ok {
+  background: rgba(245, 158, 11, 0.16);
+}
