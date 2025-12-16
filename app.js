@@ -22,18 +22,22 @@ const pgp = require("pg-promise")({
   // Optional: query(e) { console.log("QUERY:", e.query); }
 });
 
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL is not set. Add it to .env (local) or your host env vars (prod)."
+  );
+}
+
+// Neon requires SSL. This is the typical Node/Postgres approach for hosted PG.
 const db = pgp({
-  host: process.env.PGHOST,
-  port: Number(process.env.PGPORT || 5432),
-  database: process.env.PGDATABASE,
-  // user: process.env.PGUSER,
-  // password: process.env.PGPASSWORD,
-  // ssl: { rejectUnauthorized: false } // only if you need SSL (usually not for local)
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
-//Database connection test
+
+// optional connection test
 db.one("SELECT 1 AS ok")
-  .then(() => console.log("✅ Postgres connected"))
-  .catch((err) => console.error("❌ Postgres connection failed:", err));
+  .then(() => console.log("✅ Neon Postgres connected"))
+  .catch((err) => console.error("❌ Neon connection failed:", err));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
