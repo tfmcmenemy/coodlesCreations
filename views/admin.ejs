@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin – Coodles Creations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-6YvCw9r0ViV3GxHSH3o3Q3wQmXH8qv3F3cM5L5jL4s78gAb4+7ZvG9O4x2FyKJx5n3KpYtGvq6R+NnO8lWqL0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --bg: #f8f8fb;
+            --card-bg: #ffffff;
+            --accent: #f59e0b;
+            /* warm accent */
+            --accent-soft: #fef3c7;
+            --border-soft: #e5e7eb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --nav-bg: #ffffff;
+            --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+            --radius-lg: 18px;
+            --radius-pill: 999px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            padding-bottom: 70px;
+            /* space for bottom nav */
+        }
+
+        .admin-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px 16px 24px;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            margin-top: 4px;
+        }
+
+        .admin-header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .admin-header-title h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .admin-header-title span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .admin-pill {
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-pill i {
+            font-size: 0.8rem;
+        }
+
+        /* Top tab bar */
+        .admin-tabs {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .admin-tab {
+            flex: 1 1 90px;
+            min-width: 110px;
+            border: none;
+            border-radius: var(--radius-pill);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+        }
+
+        .admin-tab i {
+            font-size: 0.95rem;
+        }
+
+        .admin-tab.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .admin-tab:hover:not(.active) {
+            background: #f3f4f6;
+        }
+
+        /* Content area */
+        .admin-content-wrapper {
+            margin-top: 16px;
+        }
+
+        .admin-panel {
+            display: none;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 18px 16px 20px;
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-panel h2 {
+            margin: 0 0 8px;
+            font-size: 1.15rem;
+        }
+
+        .admin-panel p {
+            margin: 4px 0 14px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .panel-section {
+            border-top: 1px solid var(--border-soft);
+            margin-top: 10px;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="time"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-soft);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.18);
+        }
+
+        .btn {
+            border-radius: var(--radius-pill);
+            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.93;
+        }
+
+        .pill-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            background: #f3f4f6;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-soft);
+            font-size: 0.9rem;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .item-main span:first-child {
+            font-weight: 500;
+        }
+
+        .item-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .badge {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            background: #e5e7eb;
+            color: var(--text-muted);
+        }
+
+        .badge.pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge.new {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .file-input {
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px dashed var(--border-soft);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .file-input input[type="file"] {
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* Bottom nav (placeholder – swap with your existing nav if you want) */
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nav-bg);
+            box-shadow: 0 -4px 15px rgba(15, 23, 42, 0.08);
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 0 8px;
+            z-index: 20;
+        }
+
+        .bottom-nav a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .bottom-nav a i {
+            font-size: 1.1rem;
+        }
+
+        .bottom-nav a.active {
+            color: var(--accent);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 900px) {
+            body {
+                padding-bottom: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="admin-header-title">
+                <h1>Admin Dashboard</h1>
+                <span>Quick access to Coodles admin tools</span>
+            </div>
+            <div class="admin-pill">
+                <i class="fa-solid fa-shield-dog"></i>
+                Squad 6 – Admin
+            </div>
+        </header>
+
+        <!-- TOP TABS -->
+        <div class="admin-tabs" id="adminTabs">
+            <button class="admin-tab active" data-tab="mailing">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <span>Mailing List</span>
+            </button>
+            <button class="admin-tab" data-tab="approval">
+                <i class="fa-solid fa-images"></i>
+                <span>Picture Approval</span>
+            </button>
+            <button class="admin-tab" data-tab="events">
+                <i class="fa-solid fa-calendar-star"></i>
+                <span>Upcoming Event</span>
+            </button>
+            <button class="admin-tab" data-tab="upload">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Picture Upload</span>
+            </button>
+            <button class="admin-tab" data-tab="messages">
+                <i class="fa-solid fa-message"></i>
+                <span>Messages</span>
+            </button>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="admin-content-wrapper">
+            <!-- Mailing List -->
+            <section class="admin-panel active" id="panel-mailing">
+                <h2>Mailing List</h2>
+                <p>Quick view of your email list and a simple way to add new subscribers.</p>
+
+                <div class="panel-section">
+                    <div>
+                        <label for="mailing-email">Add email</label>
+                        <input type="email" id="mailing-email" placeholder="customer@example.com" />
+                    </div>
+                    <div>
+                        <label for="mailing-tag">Tag (optional)</label>
+                        <input type="text" id="mailing-tag" placeholder="e.g. Market, VIP, Halloween" />
+                    </div>
+                    <button class="btn btn-primary" type="button">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Add to mailing list (mock)
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <div class="item-row">
+                        <div class="item-main">
+                            <span>alex@example.com</span>
+                            <span class="item-sub">Joined via: Haymarket Market signup</span>
+                        </div>
+                        <div class="item-actions">
+                            <span class="pill-tag">
+                                <i class="fa-solid fa-tag"></i> Market
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item-row">
+                        <div class="item-main">
+                            <span>sam.dogmom@gmail.com</span>
+                            <span class="item-sub">Joined via: Website popup</span>
+                        </div>
+                        <div class="item-actions">
+                            <span class="pill-tag">
+                                <i class="fa-solid fa-tag"></i> Online
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Picture Approval -->
+            <section class="admin-panel" id="panel-approval">
+                <h2>Picture Approval</h2>
+                <p>Approve or reject customer-uploaded dog photos before they appear on the site.</p>
+
+                <div class="panel-section">
+                    <div class="item-row">
+                        <div class="item-main">
+                            <span>“Luna in Fall Plaid”</span>
+                            <span class="item-sub">
+                                Uploaded by: luna_loves_bandanas · 2 hours ago
+                            </span>
+                        </div>
+                        <div class="item-actions">
+                            <span class="badge pending">Pending</span>
+                            <button class="btn btn-primary" type="button">
+                                <i class="fa-solid fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-ghost" type="button">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="item-row">
+                        <div class="item-main">
+                            <span>“Max with Gingerbread Bandana”</span>
+                            <span class="item-sub">
+                                Uploaded by: max_and_mittens · Yesterday
+                            </span>
+                        </div>
+                        <div class="item-actions">
+                            <span class="badge pending">Pending</span>
+                            <button class="btn btn-primary" type="button">
+                                <i class="fa-solid fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-ghost" type="button">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upcoming Event -->
+            <section class="admin-panel" id="panel-events">
+                <h2>Upcoming Event</h2>
+                <p>Create or edit your next market, fair, or pop-up so it can show on the site.</p>
+
+                <div class="panel-section">
+                    <div>
+                        <label for="event-name">Event name</label>
+                        <input type="text" id="event-name" placeholder="Buckland Farmers Market – Winter Fest" />
+                    </div>
+
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <div style="flex: 1 1 140px;">
+                            <label for="event-date">Date</label>
+                            <input type="date" id="event-date" />
+                        </div>
+                        <div style="flex: 1 1 140px;">
+                            <label for="event-time">Time</label>
+                            <input type="time" id="event-time" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="event-location">Location</label>
+                        <input type="text" id="event-location" placeholder="123 Market St, Gainesville, VA" />
+                    </div>
+
+                    <div>
+                        <label for="event-notes">Notes (what customers should know)</label>
+                        <textarea id="event-notes"
+                            placeholder="We’ll have Christmas bandanas, matching scrunchies, and a raffle for a free set…"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" type="button">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save event (mock)
+                    </button>
+                </div>
+            </section>
+
+            <!-- Picture Upload -->
+            <section class="admin-panel" id="panel-upload">
+                <h2>Picture Upload</h2>
+                <p>Manually add photos on behalf of customers or for your gallery tests.</p>
+
+                <div class="panel-section">
+                    <div>
+                        <label for="upload-email">Customer email (optional)</label>
+                        <input type="email" id="upload-email" placeholder="customer@example.com" />
+                    </div>
+
+                    <div>
+                        <label for="upload-dog-name">Dog’s name</label>
+                        <input type="text" id="upload-dog-name" placeholder="Coodles, Luna, Max…" />
+                    </div>
+
+                    <div>
+                        <label for="upload-caption">Caption</label>
+                        <textarea id="upload-caption"
+                            placeholder="Short line that might show under the photo."></textarea>
+                    </div>
+
+                    <div class="file-input">
+                        <div><strong>Upload photo</strong></div>
+                        <div>Accepted: JPG, PNG. Max 5MB (mock only for now).</div>
+                        <input type="file" id="upload-file" accept="image/*" />
+                    </div>
+
+                    <button class="btn btn-primary" type="button" style="margin-top: 4px;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        Upload (mock)
+                    </button>
+                </div>
+            </section>
+
+            <!-- Messages -->
+            <section class="admin-panel" id="panel-messages">
+                <h2>Messages</h2>
+                <p>Recent contact form submissions or quick customer questions.</p>
+
+                <div class="panel-section">
+                    <div class="item-row">
+                        <div class="item-main">
+                            <span>Bandana sizing question</span>
+                            <span class="item-sub">
+                                From: jessica.doglover · 10 min ago
+                            </span>
+                        </div>
+                        <div class="item-actions">
+                            <span class="badge new">New</span>
+                            <button class="btn btn-ghost" type="button">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="item-row">
+                        <div class="item-main">
+                            <span>Custom order for 3 dogs</span>
+                            <span class="item-sub">
+                                From: mike.and.the.pack · 2 hours ago
+                            </span>
+                        </div>
+                        <div class="item-actions">
+                            <span class="badge">Read</span>
+                            <button class="btn btn-ghost" type="button">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <label for="quick-reply">Quick internal note (not sent):</label>
+                    <textarea id="quick-reply"
+                        placeholder="Use this to jot down follow-up notes or what you already replied on Instagram/FB."></textarea>
+                </div>
+            </section>
+        </div>
+    </div>
+    <%- include('partials/bottom-nav') %>
+
+        <script>
+            // Simple tab switching logic
+            const tabs = document.querySelectorAll(".admin-tab");
+            const panels = {
+                mailing: document.getElementById("panel-mailing"),
+                approval: document.getElementById("panel-approval"),
+                events: document.getElementById("panel-events"),
+                upload: document.getElementById("panel-upload"),
+                messages: document.getElementById("panel-messages"),
+            };
+
+            tabs.forEach((tab) => {
+                tab.addEventListener("click", () => {
+                    const target = tab.getAttribute("data-tab");
+
+                    // Update tabs
+                    tabs.forEach((t) => t.classList.remove("active"));
+                    tab.classList.add("active");
+
+                    // Update panels
+                    Object.keys(panels).forEach((key) => {
+                        panels[key].classList.toggle("active", key === target);
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>

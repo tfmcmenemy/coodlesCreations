@@ -77,6 +77,12 @@ app.get("/sizing", (req, res) => {
     pageTitle: "Sizing Guide | Coodles Creations",
   });
 });
+app.get("/admin", (req, res) => {
+  res.render("admin", {
+    activePage: "",
+    pageTitle: "Admin Portal | Coodles Creations",
+  });
+});
 
 app.get("/gallery", (req, res) => {
   res.render("gallery", {
