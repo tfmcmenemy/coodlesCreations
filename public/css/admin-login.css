@@ -1,0 +1,156 @@
+.admin-login-page {
+  min-height: calc(100vh - 80px); /* adjust for your header height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: transparent;
+}
+
+/* Everything below matches earlier styles but is scoped */
+
+.admin-login-page .login-wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-login-page .login-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+  padding: 22px 20px 24px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.admin-login-page .login-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.admin-login-page .login-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.admin-login-page .login-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.admin-login-page .tag-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #f59e0b;
+  margin-top: 8px;
+}
+
+.admin-login-page .form-group {
+  margin-bottom: 12px;
+}
+
+.admin-login-page label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #111827;
+}
+
+.admin-login-page .input-field {
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.admin-login-page .input-field:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.25);
+}
+
+.admin-login-page .login-footer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-login-page .btn {
+  border-radius: 999px;
+  padding: 9px 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.admin-login-page .btn-primary {
+  background: #f59e0b;
+  color: #fff;
+  flex: 0 0 auto;
+}
+
+.admin-login-page .btn-primary:hover {
+  opacity: 0.95;
+}
+
+.admin-login-page .helper-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Alerts */
+
+.admin-login-page .alert {
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+  display: none;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.admin-login-page .alert-icon {
+  font-size: 1rem;
+  line-height: 1;
+  margin-top: 1px;
+}
+
+.admin-login-page .alert-text {
+  flex: 1;
+}
+
+.admin-login-page .alert-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.admin-login-page .alert-warning {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.admin-login-page .alert-success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}

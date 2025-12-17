@@ -1,0 +1,41 @@
+<section class="admin-login-page">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <h1 class="login-title">Admin Login</h1>
+                <p class="login-subtitle">Sign in to access the Coodles admin tools.</p>
+                <div class="tag-pill">Admin access only</div>
+            </div>
+
+            <!-- Message area -->
+            <div id="alertBox" class="alert">
+                <div class="alert-icon" id="alertIcon">!</div>
+                <div class="alert-text" id="alertText"></div>
+            </div>
+
+            <!-- Login form -->
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" class="input-field" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" class="input-field" autocomplete="off" />
+                </div>
+
+                <div class="login-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Log In
+                    </button>
+                    <span class="helper-text">
+                        You’ll wire this into your JSON auth later.
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="/js/admin-login.js"></script>

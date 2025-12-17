@@ -90,6 +90,12 @@ app.get("/gallery", (req, res) => {
     pageTitle: "Gallery | Coodles Creations",
   });
 });
+app.get("/admin-login", (req, res) => {
+  res.render("loginAdmin", {
+    activePage: "admin-login",
+    pageTitle: "Admin Login | Coodles Creations",
+  });
+});
 
 ////////////////////////////////////////////////////////////////////////
 //POST ROUTES
