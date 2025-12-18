@@ -95,12 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const name = form.querySelector('[name="name"]')?.value || "";
       const email = form.querySelector('[name="email"]')?.value || "";
+      const event = form.querySelector('[name="event"]')?.value || "";
 
       try {
         const resp = await fetch("/mailing_list", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email }),
+          body: JSON.stringify({ name, email, event }),
         });
 
         const data = await resp.json().catch(() => ({}));

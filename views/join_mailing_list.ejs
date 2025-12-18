@@ -1,0 +1,40 @@
+<main class="page-main page-main--center">
+    <section class="center-card-section">
+        <div class="glass-card">
+            <h2>Keep in Touch</h2>
+            <p>
+                Want first dibs on new prints, event dates, and sales? Join our email list and we’ll send
+                only the good stuff – no spam, just cute dogs and bandanas.
+            </p>
+
+            <% if (event) { %>
+                <p class="event-tagline">
+                    You’re signing up from: <strong>
+                        <%= event %>
+                    </strong>
+                </p>
+                <% } %>
+
+                    <form class="simple-form" id="mailingListForm" method="POST" action="/join_mailing_list">
+                        <!-- carry the source event into the POST -->
+                        <input type="hidden" name="event" value="<%= event || '' %>">
+
+                        <div class="field">
+                            <label for="ml-name">Name (optional)</label>
+                            <input id="ml-name" name="name" type="text" placeholder="Your name">
+                        </div>
+
+                        <div class="field">
+                            <label for="ml-email">Email address</label>
+                            <input id="ml-email" name="email" type="email" placeholder="you@example.com" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full">
+                            Join the Mailing List
+                        </button>
+                    </form>
+        </div>
+    </section>
+</main>
+
+<script src="/js/mailing-list.js"></script>

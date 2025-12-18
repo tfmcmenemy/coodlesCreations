@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const expressLayouts = require("express-ejs-layouts");
+const { log } = require("console");
 
 const app = express();
 
@@ -77,11 +78,41 @@ app.get("/sizing", (req, res) => {
     pageTitle: "Sizing Guide | Coodles Creations",
   });
 });
-app.get("/admin", (req, res) => {
-  res.render("admin", {
-    activePage: "",
-    pageTitle: "Admin Portal | Coodles Creations",
-  });
+app.get("/admin", async (req, res, next) => {
+  try {
+    const mailingList = await db.any(
+      `SELECT id,
+              name,
+              email,
+              date_added,
+              "from"
+       FROM mailing_list
+       ORDER BY date_added DESC
+       LIMIT 50`
+    );
+
+    // optional: add a pretty date string for display
+    mailingList.forEach((row) => {
+      if (row.date_added) {
+        row.displayDate = new Date(row.date_added).toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        });
+      } else {
+        row.displayDate = null;
+      }
+    });
+
+    res.render("admin", {
+      activePage: "admin",
+      mailingList,
+      pageTitle: "Admin | Coodles Creations",
+    });
+  } catch (err) {
+    console.error("Error loading admin page:", err);
+    next(err);
+  }
 });
 
 app.get("/gallery", (req, res) => {
@@ -96,6 +127,15 @@ app.get("/admin-login", (req, res) => {
     pageTitle: "Admin Login | Coodles Creations",
   });
 });
+app.get("/join", (req, res) => {
+  const event = req.query.event || null; // e.g. ?event=Haymarket%20Market
+
+  res.render("join_mailing_list", {
+    activePage: "join_mailing_list",
+    pageTitle: "Join Mailing List | Coodles Creations",
+    event, // passed into EJS
+  });
+});
 
 ////////////////////////////////////////////////////////////////////////
 //POST ROUTES
@@ -104,6 +144,7 @@ app.post("/mailing_list", async (req, res) => {
   try {
     const name = (req.body.name || "").trim();
     const emailRaw = (req.body.email || "").trim();
+    const event = (req.body.event || "Online").trim();
     if (!emailRaw) {
       return res
         .status(400)
@@ -134,12 +175,11 @@ app.post("/mailing_list", async (req, res) => {
           "Thank you so much for supporting our business, but it looks like you are already on our mailing list. You will continue to receive event notifications, sales, and new products!",
       });
     }
-
     // Insert new
     await db.none(
-      `INSERT INTO mailing_list (name, email, date_added)
-       VALUES ($1, $2, NOW() AT TIME ZONE 'America/New_York')`,
-      [name === "" ? null : name, email]
+      `INSERT INTO mailing_list (name, email, date_added, "from")
+       VALUES ($1, $2, NOW() AT TIME ZONE 'America/New_York', $3)`,
+      [name === "" ? null : name, email, event]
     );
 
     return res.status(201).json({
@@ -159,6 +199,6 @@ app.post("/mailing_list", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Coodles Creations site running on http://localhost:${PORT}`);
 });

@@ -103,8 +103,8 @@
         }
 
         .admin-tab {
-            flex: 1 1 90px;
-            min-width: 110px;
+            flex: 1 1 30px;
+            min-width: 40px;
             border: none;
             border-radius: var(--radius-pill);
             padding: 8px 12px;
@@ -394,7 +394,7 @@
             <!-- Mailing List -->
             <section class="admin-panel active" id="panel-mailing">
                 <h2>Mailing List</h2>
-                <p>Quick view of your email list and a simple way to add new subscribers.</p>
+                <!-- <p>Quick view of your email list and a simple way to add new subscribers.</p> -->
 
                 <div class="panel-section">
                     <div>
@@ -411,7 +411,7 @@
                     </button>
                 </div>
 
-                <div class="panel-section">
+                <!-- <div class="panel-section">
                     <div class="item-row">
                         <div class="item-main">
                             <span>alex@example.com</span>
@@ -434,6 +434,38 @@
                             </span>
                         </div>
                     </div>
+                </div> -->
+
+                <div class="panel-section">
+                    <% if (mailingList && mailingList.length) { %>
+                        <% mailingList.forEach(function(entry) { %>
+                            <div class="item-row">
+                                <div class="item-main">
+                                    <span>
+                                        <%= entry.email %>
+                                    </span>
+                                    <span class="item-sub">
+                                        <%= entry.name || 'No Name' %> ·
+
+                                            Joined:
+                                            <% if (entry.displayDate) { %>
+                                                <%= entry.displayDate %>
+                                                    <% } %>
+                                    </span>
+                                </div>
+                                <div class="item-actions">
+                                    <% if (entry.from) { %>
+                                        <span class="pill-tag">
+                                            <i class="fa-solid fa-tag"></i>
+                                            <%= entry.from %>
+                                        </span>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <p class="item-sub">No subscribers yet.</p>
+                                    <% } %>
                 </div>
             </section>
 
